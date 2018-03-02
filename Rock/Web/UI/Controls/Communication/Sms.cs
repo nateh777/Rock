@@ -91,7 +91,8 @@ namespace Rock.Web.UI.Controls.Communication
             var valueItem = ddlFrom.Items.FindByValue( communication.SMSFromDefinedValueId.ToString() );
             if ( valueItem == null )
             {
-                ddlFrom.Items.Add( new ListItem( communication.SMSFromDefinedValueId.ToString() ) );
+                var lookupDefinedValue = DefinedValueCache.Read( communication.SMSFromDefinedValueId.GetValueOrDefault() );
+                ddlFrom.Items.Add( new ListItem( lookupDefinedValue.Description, lookupDefinedValue.Id.ToString() ) );
             }
             ddlFrom.SetValue( communication.SMSFromDefinedValueId );
             tbMessage.Text = communication.SMSMessage;
@@ -213,11 +214,6 @@ namespace Rock.Web.UI.Controls.Communication
                     var personAliasGuid = number.GetAttributeValue( "ResponseRecipient" ).AsGuidOrNull(); 
                     if ( personAliasGuid.HasValue && sender.Aliases.Any( a => a.Guid == personAliasGuid.Value ) )
                     {
-                        var valueItem = ddlFrom.Items.FindByValue( number.Id.ToString() );
-                        if ( valueItem == null )
-                        {
-                            ddlFrom.Items.Add( new ListItem( number.Description, number.Id.ToString() ) );
-                        }
                         ddlFrom.SetValue( number.Id );
                         break;
                     }
