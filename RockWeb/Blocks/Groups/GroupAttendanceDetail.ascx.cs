@@ -697,15 +697,16 @@ namespace RockWeb.Blocks.Groups
                 }
 
                 var allowAddPerson = GetAttributeValue( "AllowAddingPerson" ).AsBoolean();
+                var addPersonAs = GetAttributeValue( "AddPersonAs" );
+                ppAddPerson.PersonName = string.Format( "Add New {0}", addPersonAs );
                 if ( !GetAttributeValue( "GroupMemberAddPage" ).IsNullOrWhiteSpace() )
                 {
                     lbAddMember.Visible = allowAddPerson;
-                    ppAddPerson.Visible = false;
+                    ppAddPerson.Visible = allowAddPerson && addPersonAs == "Attendee";
                 }
                 else
                 {
                     ppAddPerson.Visible = allowAddPerson;
-                    ppAddPerson.PersonName = string.Format( "Add New {0}", GetAttributeValue( "AddPersonAs" ) );
                 }
 
                 // Get the group members
